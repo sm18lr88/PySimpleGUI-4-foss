@@ -73,8 +73,6 @@ _change_log = """
     4.61.0.29
         Addition of enable_window_config_events to the Window object. This will cause a EVENT_WIMDOW_CONFIG event to be returned
             if the window is moved or resized.
-    4.61.0.30
-        Made upgrade from GitHub window resizable so can screencapture the entire session
     4.61.0.31
         Added new constant TKINTER_CURSORS which contains a list of the standard tkinter cursor names
     4.61.0.32
@@ -157,9 +155,6 @@ _change_log = """
     4.61.0.62
         Removed the "NOT avoilable on the MAC" from file_types parameter in the docstrings
         Use Withdraw to hide window during creation
-    4.61.0.63
-        Addition of checklist item when logging new issue to  GitHub - upgraded to latest version of PySimpleGUI on PyPI
-        Listbox justification parameter found to not be implemented on some early verions of tkinter so had to protect this situation. This new feature crashed on the Pi for example
     4.61.0.64
         Allow set_options(window_location=None) to indicate the OS should provide the window location.  
             This will stop the Alpha channel being set to 0 when the window is created
@@ -411,13 +406,9 @@ _change_log = """
         Possible fix for Mac Input Element issue that's been happening with no-titlebar windows on MacOS 13.2.1 Ventura
     4.61.0.171
         Added formatted_datetime_now function for easy timestamps for logging
-    4.61.0.172
-        Added upgrade service - No notification popups should be shown yet.  Don't want to SPAM users while testing
     4.61.0.173
         Made changing the "Show only critical" setting in global settings take effect immediately rather than waiting until closed settings window
         Added timer_stop_usec to return timer value in microseconds
-    4.61.0.174
-        Overwrite upgrade data if any portion has changed
     4.61.0.175
         Notification window - added countdown counter. Added hand cursor if message is a link and enable clicking of link to open the browser to that link
     4.61.0.176
@@ -558,8 +549,8 @@ port = 'PySimpleGUI'
     In addition to the normal publishing requirements of LGPL3+, these also apply:
     1. These and all comments are to remain in the source code
     2. The "Official" version of PySimpleGUI and the associated documentation lives on two (and **only** two) places:
-       1. GitHub - (http://www.PySimpleGUI.com) currently pointing at:
-          https://github.com/PySimpleGUI/PySimpleGUI
+       1. GitHub - (http://github.com/sm18lr88/PySimpleGUI-4-foss) currently pointing at:
+          https://github.com/sm18lr88/PySimpleGUI-4-foss
        2. PyPI - pip install PySimpleGUI is the customary way of obtaining the latest release
     
        THE official documentation location is:
@@ -571,7 +562,6 @@ port = 'PySimpleGUI'
           https://eCookbook.PySimpleGUI.org - The eCookbook located on Trinket
           https://Anncouncements.PySimpleGUI.org - The Announcements Issue on GitHub
           https://Install.PySimpleGUI.org - The "How to install" section of the docs
-          https://Upgrading.PySimpleGUI.org - The "How to upgrade" section of the docs
           https://Udemy.PySimpleGUI.org - The Udemy course
           https://GitHub.PySimpleGUI.org - The PySimpleGUI GitHub (also the located at PySimpleGUI.com)
           https://Issues.PySimpleGUI.org - Open a new issue on GitHub
@@ -2544,7 +2534,7 @@ class Input(Element):
         self.disabled_readonly_text_color = disabled_readonly_text_color
         self.ReadOnly = readonly
         self.BorderWidth = border_width if border_width is not None else DEFAULT_BORDER_WIDTH
-        self.TKEntry = self.Widget = None  # type: tk.Entry
+        self.TKEntry = self.Widget = None 
         key = key if key is not None else k
         sz = size if size != (None, None) else s
         pad = pad if pad is not None else p
@@ -2771,7 +2761,7 @@ class Combo(Element):
         self.Values = values
         self.DefaultValue = default_value
         self.ChangeSubmits = change_submits or enable_events
-        self.Widget = self.TKCombo = None  # type: ttk.Combobox
+        self.Widget = self.TKCombo = None
         self.Disabled = disabled
         self.Readonly = readonly
         self.BindReturnKey = bind_return_key
@@ -3228,9 +3218,9 @@ class Listbox(Element):
         self.HighlightBackgroundColor = highlight_background_color if highlight_background_color is not None else fg
         self.HighlightTextColor = highlight_text_color if highlight_text_color is not None else bg
         self.RightClickMenu = right_click_menu
-        self.vsb = None  # type: tk.Scrollbar or None
+        self.vsb = None
         self.hsb = None  # type: tk.Scrollbar | None
-        self.TKListbox = self.Widget = None  # type: tk.Listbox
+        self.TKListbox = self.Widget = None
         self.element_frame = None  # type: tk.Frame
         self.NoScrollbar = no_scrollbar
         self.HorizontalScroll = horizontal_scroll
@@ -10232,7 +10222,7 @@ VP = VPush
 class _TimerPeriodic:
     id_counter = 1
     # Dictionary containing the active timers.  Format is {id : _TimerPeriodic object}
-    active_timers = {}         #type: dict[int:_TimerPeriodic]
+    active_timers = {}
 
     def __init__(self, window, frequency_ms, key=EVENT_TIMER, repeating=True):
         """
@@ -25031,206 +25021,6 @@ RED_X_BASE64 = b'iVBORw0KGgoAAAANSUhEUgAAAFoAAABaCAYAAAA4qEECAAAQ5ElEQVR4nO1ca3S
 GREEN_CHECK_BASE64 = b'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'
 
 
-
-'''
-M""MMMMM""M                                           dP          
-M  MMMMM  M                                           88          
-M  MMMMM  M 88d888b. .d8888b. 88d888b. .d8888b. .d888b88 .d8888b. 
-M  MMMMM  M 88'  `88 88'  `88 88'  `88 88'  `88 88'  `88 88ooood8 
-M  `MMM'  M 88.  .88 88.  .88 88       88.  .88 88.  .88 88.  ... 
-Mb       dM 88Y888P' `8888P88 dP       `88888P8 `88888P8 `88888P' 
-MMMMMMMMMMM 88            .88                                     
-            dP        d8888P                                      
-MP""""""`MM                            oo                   
-M  mmmmm..M                                                 
-M.      `YM .d8888b. 88d888b. dP   .dP dP .d8888b. .d8888b. 
-MMMMMMM.  M 88ooood8 88'  `88 88   d8' 88 88'  `"" 88ooood8 
-M. .MMM'  M 88.  ... 88       88 .88'  88 88.  ... 88.  ... 
-Mb.     .dM `88888P' dP       8888P'   dP `88888P' `88888P' 
-MMMMMMMMMMM
-'''
-""" 
-__upgrade_server_ip = 'upgradeapi.PySimpleGUI.com'
-__upgrade_server_port = '5353'
- """
-
-""" 
-def __send_dict(ip, port, dict_to_send):
-    """""" 
-    Send a dictionary to the upgrade server and get back a dictionary in response
-    :param ip:           ip address of the upgrade server
-    :type ip:            str
-    :param port:         port number
-    :type port:          int | str
-    :param dict_to_send: dictionary of items to send
-    :type dict_to_send:  dict
-    :return:             dictionary that is the reply
-    :rtype:              dict
-    """
- """
-    # print(f'sending dictionary to ip {ip} port {port}')
-    try:
-        # Create a socket object
-        s = socket.socket()
-
-        s.settimeout(5.0)       # set a 5 second timeout
-
-        # connect to the server on local computer
-        s.connect((ip , int(port)))
-        # send a python dictionary
-        s.send(json.dumps(dict_to_send).encode())
-
-        # receive data from the server
-        reply_data = s.recv(1024).decode()
-        # close the connection
-        s.close()
-    except Exception as e:
-        # print(f'Error sending to server:', e)
-        # print(f'payload:\n', dict_to_send)
-        reply_data = e
-    try:
-        data_dict = json.loads(reply_data)
-    except Exception as e:
-        # print(f'UPGRADE THREAD - Error decoding reply {reply_data} as a dictionary. Error = {e}')
-        data_dict = {}
-    return data_dict
-
- """
- 
-"""
-def __show_previous_upgrade_information():
-"""
-
-"""
-
-    # if nothing to show, then just return
-    if pysimplegui_user_settings.get('-upgrade info seen-', True) and not pysimplegui_user_settings.get('-upgrade info available-', False):
-        return
-    if pysimplegui_user_settings.get('-upgrade show only critical-', False) and pysimplegui_user_settings.get('-severity level-', '') != 'Critical':
-        return
-
-    message1 = pysimplegui_user_settings.get('-upgrade message 1-', '')
-    message2 = pysimplegui_user_settings.get('-upgrade message 2-', '')
-    recommended_version = pysimplegui_user_settings.get('-upgrade recommendation-', '')
-    severity_level = pysimplegui_user_settings.get('-severity level-', '')
-
-    if severity_level != 'Critical':
-        return
-
-    layout = [[Image(EMOJI_BASE64_HAPPY_THUMBS_UP), T('An upgrade is available & recommended', font='_ 14')],
-              [T('It is recommended you upgrade to version {}'.format(recommended_version))],
-              [T(message1, enable_events=True, k='-MESSAGE 1-')],
-              [T(message2, enable_events=True, k='-MESSAGE 2-')],
-              [CB('Do not show this message again in the future', default=True, k='-SKIP IN FUTURE-')],
-              [B('Close'), T('This window auto-closes in'), T('30', k='-CLOSE TXT-', text_color='white', background_color='red'), T('seconds')]]
-
-    window = Window('PySimpleGUI Intelligent Upgrade', layout, finalize=True)
-    if 'http' in message1:
-        window['-MESSAGE 1-'].set_cursor('hand1')
-    if 'http' in message2:
-        window['-MESSAGE 2-'].set_cursor('hand1')
-
-    seconds_left=30
-    while True:
-        event, values = window.read(timeout=1000)
-        if event in ('Close', WIN_CLOSED) or seconds_left < 1:
-            break
-        if values['-SKIP IN FUTURE-']:
-            if not running_trinket():
-                pysimplegui_user_settings['-upgrade info available-'] = False
-                pysimplegui_user_settings['-upgrade info seen-'] = True
-        if event == '-MESSAGE 1-' and 'http' in message1 and webbrowser_available:
-            webbrowser.open_new_tab(message1)
-        elif event == '-MESSAGE 2-' and 'http' in message2 and webbrowser_available:
-            webbrowser.open_new_tab(message2)
-        window['-CLOSE TXT-'].update(seconds_left)
-        seconds_left -= 1
-
-    window.close()
- """
-""" 
-def __get_linux_distribution():
-    line_tuple = ('Linux Distro', 'Unknown', 'No lines Found in //etc//os-release')
-    try:
-        with open('/etc/os-release') as f:
-            data = f.read()
-        lines = data.split('\n')
-        for line in lines:
-            if line.startswith('PRETTY_NAME'):
-                line_split = line.split('=')[1].strip('"')
-                line_tuple = tuple(line_split.split(' '))
-                return line_tuple
-    except:
-        line_tuple = ('Linux Distro', 'Exception','Error reading//processing //etc//os-release')
-
-    return line_tuple
- """
-""" 
-def __perform_upgrade_check_thread():
-    # print(f'Upgrade thread...seen = {pysimplegui_user_settings.get("-upgrade info seen-", False)}')
-    try:
-        if running_trinket():
-            os_name = 'Trinket'
-            os_ver = __get_linux_distribution()
-        elif running_replit():
-            os_name = 'REPL.IT'
-            os_ver = __get_linux_distribution()
-        elif running_windows():
-            os_name = 'Windows'
-            os_ver = platform.win32_ver()
-        elif running_linux():
-            os_name = 'Linux'
-            os_ver = __get_linux_distribution()
-        elif running_mac():
-            os_name = 'Mac'
-            os_ver = platform.mac_ver()
-        else:
-            os_name = 'Other'
-            os_ver = ''
-
-        psg_ver = version
-        framework_ver = framework_version
-        python_ver = sys.version
-
-        upgrade_dict = {
-            'OSName' : str(os_name),
-            'OSVersion' : str(os_ver),
-            'PythonVersion' : str(python_ver),
-            'PSGVersion' : str(psg_ver),
-            'FrameworkName' : 'tkinter',
-            'FrameworkVersion' : str(framework_ver),
-        }
-        reply_data = __send_dict(__upgrade_server_ip, __upgrade_server_port, upgrade_dict)
-
-        recommended_version = reply_data.get('SuggestedVersion', '')
-        message1 = reply_data.get('Message1', '')
-        message2 = reply_data.get('Message2', '')
-        severity_level = reply_data.get('SeverityLevel', '')
-        # If any part of the reply has changed from the last reply, overwrite the data and set flags so user will be informed
-        if (message1 or message2) and not running_trinket():
-            if pysimplegui_user_settings.get('-upgrade message 1-', '') != message1 or \
-               pysimplegui_user_settings.get('-upgrade message 2-', '') != message2 or \
-               pysimplegui_user_settings.get('-upgrade recommendation-', '') != recommended_version or \
-               pysimplegui_user_settings.get('-severity level-', '') != severity_level:
-                # Save the data to the settings file
-                pysimplegui_user_settings['-upgrade info seen-'] = False
-                pysimplegui_user_settings['-upgrade info available-'] = True
-                pysimplegui_user_settings['-upgrade message 1-'] = message1
-                pysimplegui_user_settings['-upgrade message 2-'] = message2
-                pysimplegui_user_settings['-upgrade recommendation-'] = recommended_version
-                pysimplegui_user_settings['-severity level-'] = severity_level
-    except Exception as e:
-        reply_data = {}
-        # print('Upgrade server error', e)
-    # print(f'Upgrade Reply = {reply_data}')
- """
-""" 
-def __perform_upgrade_check():
-    # For now, do not show data returned. Still testing and do not want to "SPAM" users with any popups
-    __show_previous_upgrade_information()
-    threading.Thread(target=lambda: __perform_upgrade_check_thread(), daemon=True).start()
-
- """
 # =========================================================================#
 # MP""""""`MM                                                                dP                  dP
 # M  mmmmm..M                                                                88                  88
@@ -25387,7 +25177,6 @@ These items may solve your problem. Please check those you've done by changing -
 - [{}] For non tkinter - Looked at readme for your specific port if not PySimpleGUI (Qt, WX, Remi)
 - [{}] Run your program outside of your debugger (from a command line)
 - [{}] Searched through Issues (open and closed) to see if already reported Issues.PySimpleGUI.org
-- [{}] Upgraded to the latest official release of PySimpleGUI on PyPI
 - [{}] Tried using the PySimpleGUI.py file on GitHub. Your problem may have already been fixed but not released
 
 ## Detailed Description
@@ -25432,7 +25221,7 @@ These items may solve your problem. Please check those you've done by changing -
 
 
 def _github_issue_post_make_github_link(title, body):
-    pysimplegui_url = "https://github.com/PySimpleGUI/PySimpleGUI"
+    pysimplegui_url = "https://github.com/sm18lr88/PySimpleGUI-4-foss"
     pysimplegui_issues = "{}/issues/new?".format(pysimplegui_url)
 
     # Fix body cuz urllib can't do it smfh
@@ -25597,7 +25386,6 @@ def main_open_github_issue():
                  ('For non tkinter - Looked at readme for your specific port if not PySimpleGUI (Qt, WX, Remi)', ''),
                  ('Run your program outside of your debugger (from a command line)', ''),
                  ('Searched through Issues (open and closed) to see if already reported', 'https://Issues.PySimpleGUI.org'),
-                 ('Upgraded to the latest official release of PySimpleGUI on PyPI', 'https://Upgrading.PySimpleGUI.org'),
                  ('Tried using the PySimpleGUI.py file on GitHub. Your problem may have already been fixed but not released.', ''))
 
     checklist_col1 = Col([[CB(c, k=('-CB-', i)), T(t, k='-T{}-'.format(i), enable_events=True)] for i, (c, t) in enumerate(checklist[:4])], k='-C FRAME CBs1-')
@@ -25751,224 +25539,6 @@ def main_open_github_issue():
 
     window.close()
 
-
-'''
-MM'"""""`MM oo   dP   M""MMMMM""MM          dP       
-M' .mmm. `M      88   M  MMMMM  MM          88       
-M  MMMMMMMM dP d8888P M         `M dP    dP 88d888b. 
-M  MMM   `M 88   88   M  MMMMM  MM 88    88 88'  `88 
-M. `MMM' .M 88   88   M  MMMMM  MM 88.  .88 88.  .88 
-MM.     .MM dP   dP   M  MMMMM  MM `88888P' 88Y8888' 
-MMMMMMMMMMM           MMMMMMMMMMMM                   
-                                                     
-M""MMMMM""M                                           dP          
-M  MMMMM  M                                           88          
-M  MMMMM  M 88d888b. .d8888b. 88d888b. .d8888b. .d888b88 .d8888b. 
-M  MMMMM  M 88'  `88 88'  `88 88'  `88 88'  `88 88'  `88 88ooood8 
-M  `MMM'  M 88.  .88 88.  .88 88       88.  .88 88.  .88 88.  ... 
-Mb       dM 88Y888P' `8888P88 dP       `88888P8 `88888P8 `88888P' 
-MMMMMMMMMMM 88            .88                                     
-            dP        d8888P
-
-'''
-
-
-'''
-M""""""""M dP                                        dP 
-Mmmm  mmmM 88                                        88 
-MMMM  MMMM 88d888b. 88d888b. .d8888b. .d8888b. .d888b88 
-MMMM  MMMM 88'  `88 88'  `88 88ooood8 88'  `88 88'  `88 
-MMMM  MMMM 88    88 88       88.  ... 88.  .88 88.  .88 
-MMMM  MMMM dP    dP dP       `88888P' `88888P8 `88888P8 
-MMMMMMMMMM
-'''
-
-def _the_github_upgrade_thread(window, sp):
-    """
-    The thread that's used to run the subprocess so that the GUI can continue and the stdout/stderror is collected
-
-    :param window:
-    :param sp:
-    :return:
-    """
-
-    window.write_event_value('-THREAD-', (sp, '===THEAD STARTING==='))
-    window.write_event_value('-THREAD-', (sp, '----- STDOUT & STDERR Follows ----'))
-    for line in sp.stdout:
-        oline = line.decode().rstrip()
-        window.write_event_value('-THREAD-', (sp, oline))
-
-    # DO NOT CHECK STDERR because it won't exist anymore. The subprocess code now combines stdout and stderr
-    # window.write_event_value('-THREAD-', (sp, '----- STDERR ----'))
-
-    # for line in sp.stderr:
-    #     oline = line.decode().rstrip()
-    #     window.write_event_value('-THREAD-', (sp, oline))
-    window.write_event_value('-THREAD-', (sp, '===THEAD DONE==='))
-
-
-
-def _copy_files_from_github():
-    """Update the local PySimpleGUI installation from Github"""
-
-    github_url = 'https://raw.githubusercontent.com/PySimpleGUI/PySimpleGUI/master/'
-    #files = ["PySimpleGUI.py", "setup.py"]
-    files = ["PySimpleGUI.py"]
-
-    # add a temp directory
-    temp_dir = tempfile.TemporaryDirectory()
-    psg_dir = os.path.join(temp_dir.name, 'PySimpleGUI')
-    path = psg_dir
-
-
-    os.mkdir(path)
-    # path = os.path.abspath('temp')
-
-    # download the files
-    downloaded = []
-    for file in files:
-        with request.urlopen(github_url + file) as response:
-            with open(os.path.join(path, file), 'wb') as f:
-                f.write(response.read())
-                downloaded.append(file)
-
-    # get the new version number if possible
-    with open(os.path.join(path, files[0]), encoding='utf-8') as f:
-        text_data = f.read()
-
-    package_version = "Unknown"
-    match = re.search(r'__version__ = \"([\d\.]+)', text_data)
-    if match:
-        package_version = match.group(1)
-
-    # create a setup.py file from scratch
-    setup_text = ''.join([
-            "import setuptools\n",
-            "setuptools.setup(",
-            "name='PySimpleGUI',",
-            "author='PySimpleGUI',"
-            "author_email='PySimpleGUI@PySimpleGUI.org',",
-            "description='Unreleased Development Version',",
-            "url='https://github.com/PySimpleGUI/PySimpleGUI',"
-            "packages=setuptools.find_packages(),",
-            "version='", package_version, "',",
-            "entry_points={",
-            "'gui_scripts': [",
-            "'psgissue=PySimpleGUI.PySimpleGUI:main_open_github_issue',",
-            "'psgmain=PySimpleGUI.PySimpleGUI:_main_entry_point',",
-            "'psgupgrade=PySimpleGUI.PySimpleGUI:_upgrade_entry_point',",
-            "'psghelp=PySimpleGUI.PySimpleGUI:main_sdk_help',",
-            "'psgver=PySimpleGUI.PySimpleGUI:main_get_debug_data',",
-            "'psgsettings=PySimpleGUI.PySimpleGUI:main_global_pysimplegui_settings',",
-            "],",
-            "},)"
-            ])
-
-    with open(os.path.join(temp_dir.name, 'setup.py'), 'w', encoding='utf-8') as f:
-        f.write(setup_text)
-
-    # create an __init__.py file
-    with open(os.path.join(path, '__init__.py'), 'w', encoding='utf-8') as f:
-        f.writelines([
-            'name="PySimpleGUI"\n',
-            'from .PySimpleGUI import *\n',
-            'from .PySimpleGUI import __version__'
-        ])
-
-    # install the pysimplegui package from local dist
-    # https://pip.pypa.io/en/stable/user_guide/?highlight=subprocess#using-pip-from-your-program
-    # subprocess.check_call([sys.executable, '-m', 'pip', 'install', path])
-    # python_command = execute_py_get_interpreter()
-    python_command = sys.executable         # always use the currently running interpreter to perform the pip!
-    if 'pythonw' in python_command:
-        python_command = python_command.replace('pythonw', 'python')
-
-    layout = [[Text('Pip Upgrade Progress')],
-              [Multiline(s=(90,15), k='-MLINE-', reroute_cprint=True, write_only=True, expand_x=True, expand_y=True)],
-              [Button('Downloading...', k='-EXIT-'), Sizegrip()]]
-
-    window = Window('Pip Upgrade', layout, finalize=True, keep_on_top=True, modal=True, disable_close=True, resizable=True)
-
-    window.disable_debugger()
-
-    cprint('The value of sys.executable = ', sys.executable, c='white on red')
-
-    # if not python_command:
-    #     python_command = sys.executable
-
-    cprint('Installing with the Python interpreter =', python_command, c='white on purple')
-
-    sp = execute_command_subprocess(python_command, '-m pip install', temp_dir.name,  pipe_output=True)
-
-    threading.Thread(target=_the_github_upgrade_thread, args=(window, sp), daemon=True).start()
-
-    while True:
-        event, values = window.read()
-        if event == WIN_CLOSED or (event == '-EXIT-' and window['-EXIT-'].ButtonText == 'Done'):
-            break
-        if event == '-THREAD-':
-            cprint(values['-THREAD-'][1])
-            if values['-THREAD-'][1] == '===THEAD DONE===':
-                window['-EXIT-'].update(text='Done', button_color='white on red')
-    window.close()
-    # cleanup and remove files
-    temp_dir.cleanup()
-
-
-    return package_version
-
-
-def _upgrade_from_github():
-    mod_version = _copy_files_from_github()
-
-    popup("*** SUCCESS ***", "PySimpleGUI.py installed version:", mod_version,
-          "For python located at:", os.path.dirname(sys.executable), keep_on_top=True, background_color='red',
-          text_color='white')
-
-
-def _upgrade_gui():
-    try:
-        cur_ver = version[:version.index('\n')]
-    except:
-        cur_ver = version
-
-    if popup_yes_no('* WARNING *',
-                    'You are about to upgrade your PySimpleGUI package previously installed via pip to the latest version location on the GitHub server.',
-                    'You are running verrsion {}'.format(cur_ver),
-                    '',
-                    'Are you sure you want to overwrite this release?', title='Are you sure you want to overwrite?',
-                    keep_on_top=True) == 'Yes':
-        _upgrade_from_github()
-    else:
-        popup_quick_message('Cancelled upgrade\nNothing overwritten', background_color='red', text_color='white', keep_on_top=True, non_blocking=False)
-
-# main_upgrade_from_github = _upgrade_gui
-
-def _upgrade_entry_point():
-    """
-    This function is entered via the psgupgrade.exe file.
-
-    It is needed so that the exe file will exit and thus allow itself to be overwritten which
-        is what the upgrade will do.
-    It simply runs the PySimpleGUI.py file with a command line argument "upgrade" which will
-        actually do the upgrade.
-    """
-    interpreter = sys.executable
-    if 'pythonw' in interpreter:
-        interpreter = interpreter.replace('pythonw', 'python')
-    execute_py_file(__file__, 'upgrade', interpreter_command=interpreter)
-
-
-
-def _main_entry_point():
-    # print('Restarting main as a new process...(needed in case you want to GitHub Upgrade)')
-    # Relaunch using the same python interpreter that was used to run this function
-    interpreter = sys.executable
-    if 'pythonw' in interpreter:
-        interpreter = interpreter.replace('pythonw', 'python')
-    execute_py_file(__file__, interpreter_command=interpreter)
-
-main_upgrade_from_github = _upgrade_entry_point
 
 ####################################################################################################
 
@@ -26997,20 +26567,8 @@ if _mac_should_set_alpha_to_99():
     # Applyting Mac OS 12.3+ Alpha Channel fix.  Sets the default Alpha Channel to 0.99
     set_options(alpha_channel=0.99)
 
-
-__perform_upgrade_check()
-
-
 # -------------------------------- ENTRY POINT IF RUN STANDALONE -------------------------------- #
 if __name__ == '__main__':
-    # To execute the upgrade from command line, type:
-    # python -m PySimpleGUI.PySimpleGUI upgrade
-    if len(sys.argv) > 1 and sys.argv[1] == 'upgrade':
-        _upgrade_gui()
-        exit(0)
-    elif len(sys.argv) > 1 and sys.argv[1] == 'help':
-        main_sdk_help()
-        exit(0)
     main()
     exit(0)
 #25424909a31c4fa789f5aa4e210e7e07d412560195dc21abe678b68a3b4bdb2a8a78651d8613daaded730bc2a31adc02ba8b99717fff701cda8ae13c31f1dcee9da8837908626f1c5cc81e7a34d3b9cd032dba190647564bba72d248ad6b83e30c8abc057f3f1b1fb3a2ca853069de936f3f53522fd4732b743268e0fcde54577a05880f2057efe6bbd6349f77d6c002544f38e24db40ab84f3dde4a4b8b31e84480db31656fb74ae0c01a7af0b35ac66cf8a0fbb8ca85685fea075608c7862da6635511d0e5403c4a637138324ce1fb1308b765cba53863ddf7b01ca4fc988932b03c4a8403a72b8105f821913f02925218dbecf1e089bd32e78667939503f2abfd89b37fa293927e30550d441f21dc68273d2d07ed910f6a69bc8c792015eb623ada7e65347cf0389cf2a1696a7ccf88098a4fb4bfa44e88fac2a94a44e25b010355e48d483d896c58eb771ef47e01066156f9344750b487e176ca0642601951f096d4c03045aa8f912d475dbe04b82c6ddf1ac3adbf815aef4ca2c6add058c2789b66a9abd875f334752ec1bde11b9b56e334823304b6cc3fadf7daae277c982ebc7eadb726a33e2740d075ad082b9c20304c4a53228d6f05357c40903a78113aea4e6169e1a5351866f7a9ffc6666eb08a31bfb84d90cb3002f7ebf87871988b88a7b8a52d36a1a7dd826360b5c6ad922829d9f73d204f09d1b9ad9ffd8d
